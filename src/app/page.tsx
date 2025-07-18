@@ -20,23 +20,23 @@ export default function Home() {
 
   useEffect(() => {
     fetch('/api/expenses')
-    .then(res => res.json())
-    .then(data => setExpenses(data))
+      .then(res => res.json())
+      .then(data => setExpenses(data))
 
   }, [])
-  
+
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4">
       <p className="text-lg">Bem-vindo ao seu gerenciador financeiro!</p>
       <ul className="space-y-2 mt-6">
-  {expenses.map((expense, index) => (
-    <li key={index} className="border p-2 rounded">
-      <strong>{expense.name}</strong> — {expense.description}
-      <br />
-      <span>Categoria: {expense.category}</span> | 💰 R$ {expense.price.toFixed(2)}
-    </li>
-  ))}
-</ul>
+        {expenses.map((expense, index) => (
+          <li key={index} className="border p-2 rounded">
+            <strong>{expense.name}</strong> — {expense.description}
+            <br />
+            <span>Categoria: {expense.category}</span> | 💰 R$ {expense.price.toFixed(2)}
+          </li>
+        ))}
+      </ul>
 
     </main>
   );
