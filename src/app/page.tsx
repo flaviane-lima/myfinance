@@ -1,5 +1,10 @@
-import { Button } from './components/Button';
+import SectionHeader from "./components/SectionHeader";
 
-export default function Home() {
-  return <Button>Clique aqui</Button>;
+export default function Page() {
+  return (
+    <section className="p-6">
+      <SectionHeader>Bem vindo ao seu gerenciador financeiro!</SectionHeader>
+    </section>
+
+  );
 }

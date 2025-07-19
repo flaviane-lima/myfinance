@@ -1,14 +1,16 @@
 'use client';
 
+import React from 'react';
 import styled from 'styled-components';
 
-export const Button = styled.button`
-  background: #0070f3;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-
-  &:hover {
-    background: #0059c1;
-  }
+const Title = styled.h2`
+  font-size: 1rem; // equivalente a 14px
+  font-weight: 200;
+  margin-bottom: 1rem;
+  color: #374151;
+  padding-left: 1.5rem;   
 `;
+
+export default function SectionHeader({ children }: { children: React.ReactNode }){
+  return <Title>{children}</Title>
+}
