@@ -49,7 +49,7 @@ export default function Page() {
 
         {/* 🍽️ Food */}
         <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4">🍽️ Food</h3>
+          <h3 className="text-lg font-semibold mb-4">Food</h3>
           {expenses
             .filter(expense => expense.category === "Food")
             .map((expense, index) => (
@@ -58,13 +58,14 @@ export default function Page() {
                 name={expense.name}
                 description={expense.description}
                 price={expense.price}
+                icon="🍽️"
               />
             ))}
         </div>
 
         {/* 🌐 Utilities */}
         <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4">🌐 Utilities</h3>
+          <h3 className="text-lg font-semibold mb-4">Utilities</h3>
           {expenses
             .filter(expense => expense.category === "Utilities")
             .map((expense, index) => (
@@ -73,13 +74,14 @@ export default function Page() {
                 name={expense.name}
                 description={expense.description}
                 price={expense.price}
+                icon="🌐"
               />
             ))}
         </div>
 
         {/* 🏋️ Health */}
         <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4">🏋️ Health</h3>
+          <h3 className="text-lg font-semibold mb-4">Health</h3>
           {expenses
             .filter(expense => expense.category === "Health")
             .map((expense, index) => (
@@ -88,13 +90,14 @@ export default function Page() {
                 name={expense.name}
                 description={expense.description}
                 price={expense.price}
+                icon="🏋️"
               />
             ))}
         </div>
 
         {/* ☕ Leisure */}
         <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4">☕ Leisure</h3>
+          <h3 className="text-lg font-semibold mb-4">Leisure</h3>
           {expenses
             .filter(expense => expense.category === "Leisure")
             .map((expense, index) => (
@@ -103,6 +106,7 @@ export default function Page() {
                 name={expense.name}
                 description={expense.description}
                 price={expense.price}
+                icon="☕"
               />
             ))}
         </div>
