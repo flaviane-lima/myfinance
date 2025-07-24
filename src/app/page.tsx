@@ -1,4 +1,11 @@
+'use client'
+
+import styled from "styled-components"
+import HeaderContent from "./components/HeaderContent"; // 🔥 Adicionado
+import ExpenseCard from "./components/ExpenseCard";
 import SectionHeader from "./components/SectionHeader";
+import PageWrapper from "./components/PageWrapper";
+
 
 //esses hooks busca os dados da API
 import { useEffect, useState } from "react"; 
@@ -10,6 +17,16 @@ type Expense = {
   category: string
   price: number
 }
+
+// ✨ NOVO WRAPPER EXCLUSIVO COM FUNDO CINZA CLARO
+const BackgroundWrapper = styled.div`
+ background-color: #f3f4f6;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`
+
 
 
 export default function Page() {
@@ -24,9 +41,28 @@ export default function Page() {
   }, [])
 
   return (
-    <section className="p-6">
-      <SectionHeader>Bem vindo ao seu gerenciador financeiro!</SectionHeader>
-    </section>
+     <BackgroundWrapper>
+      <HeaderContent /> 
+    <PageWrapper>
+      <section className="max-w-4xl mx-auto p-6">
+        <SectionHeader>Bem vindo ao seu gerenciador financeiro!</SectionHeader>
 
-  );
+        <div className="mt-8">
+          <h3 className="text-lg font-semibold mb-4">🍽️ Food</h3>
+          {expenses
+            .filter(expense => expense.category === "Food")
+            .map((expense, index) => (
+              <ExpenseCard
+                key={index}
+                name={expense.name}
+                description={expense.description}
+                price={expense.price}
+              />
+            ))}
+        </div>
+      </section>
+    </PageWrapper>
+    </BackgroundWrapper>
+  )
 }
+
