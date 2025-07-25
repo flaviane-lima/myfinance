@@ -1,16 +1,16 @@
 'use client'
 
 import styled from "styled-components"
-import HeaderContent from "./components/HeaderContent"; // 🔥 Adicionado
 import ExpenseCard from "./components/ExpenseCard";
 import SectionHeader from "./components/SectionHeader";
 import PageWrapper from "./components/PageWrapper";
+import Header from "./components/Header";
 
 
 //esses hooks busca os dados da API
 import { useEffect, useState } from "react"; 
 
-//ajuda a tipar os dados quem da API
+//ajuda a tipar os dados que vem da API
 type Expense = {
   name: string
   description: string
@@ -42,7 +42,7 @@ export default function Page() {
 
   return (
      <BackgroundWrapper>
-      <HeaderContent /> 
+      <Header /> 
     <PageWrapper>
       <section className="max-w-4xl mx-auto p-6">
         <SectionHeader>Bem vindo ao seu gerenciador financeiro!</SectionHeader>
