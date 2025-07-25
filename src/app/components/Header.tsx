@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 
-export const Header = styled.header`
+const StyledHeader = styled.header`
   background-color: #f3f4f6;
   width: 100%;
   max-width: 1024px;
@@ -16,5 +16,12 @@ export const Header = styled.header`
     font-weight: bold;
     margin: 0;
   }
-
 `;
+
+export default function Header() {
+  return (
+    <StyledHeader>
+      <h1>Gestão Financeira</h1>
+    </StyledHeader>
+  );
+}
