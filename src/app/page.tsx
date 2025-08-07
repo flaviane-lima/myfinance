@@ -50,9 +50,11 @@ export default function Page() {
 
   return (
      <BackgroundWrapper>
-      <Header /> 
+      
     <PageWrapper>
-      <section className="max-w-4xl mx-auto p-6">
+      <Header /> 
+      
+      <section>
         <SectionHeader>Bem vindo ao seu gerenciador financeiro!</SectionHeader>
 
         {categories.map(category => (
