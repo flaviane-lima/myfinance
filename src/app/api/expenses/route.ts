@@ -7,30 +7,30 @@ type Expense = {
   price: number
 }
 
-// Dados mockados
+// Dados mockados em português
 const expenses: Expense[] = [
   {
-    name: 'Groceries',
-    description: 'Weekly supermarket shopping',
-    category: 'Food',
+    name: 'Mercado',
+    description: 'Compras semanais no supermercado',
+    category: 'Alimentação',
     price: 120.50,
   },
   {
     name: 'Internet',
-    description: 'Monthly broadband subscription',
-    category: 'Utilities',
+    description: 'Assinatura mensal da internet',
+    category: 'Utilidades',
     price: 89.99,
   },
   {
-    name: 'Gym Membership',
-    description: 'Monthly fitness center fee',
-    category: 'Health',
+    name: 'Academia',
+    description: 'Mensalidade da academia',
+    category: 'Saúde',
     price: 59.90,
   },
   {
-    name: 'Coffee',
-    description: 'Latte at the local cafe',
-    category: 'Leisure',
+    name: 'Café',
+    description: 'Café fora de casa',
+    category: 'Lazer',
     price: 4.75,
   },
 ]

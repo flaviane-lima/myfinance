@@ -29,10 +29,10 @@ const BackgroundWrapper = styled.div`
 
 //arrays de categorias
 const categories = [
-  {name: "Food", icon: "🍽️"},
-  {name: "Utilities", icon: "🌐"},
-  {name: "Health", icon: "🏋️" },
-  {name: "Leisure", icon: "☕"},
+  {name: "Alimentação", icon: "🍽️"},
+  {name: "Utilidades", icon: "🌐"},
+  {name: "Saúde", icon: "🏋️" },
+  {name: "Lazer", icon: "☕"},
 ]
 
 
