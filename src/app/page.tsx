@@ -27,6 +27,14 @@ const BackgroundWrapper = styled.div`
   flex-direction: column;
 `
 
+//arrays de categorias
+const categories = [
+  {name: "Food", icon: "🍽️"},
+  {name: "Utilities", icon: "🌐"},
+  {name: "Health", icon: "🏋️" },
+  {name: "Leisure", icon: "☕"},
+]
+
 
 
 export default function Page() {
@@ -47,69 +55,23 @@ export default function Page() {
       <section className="max-w-4xl mx-auto p-6">
         <SectionHeader>Bem vindo ao seu gerenciador financeiro!</SectionHeader>
 
-        {/* 🍽️ Food */}
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4">Food</h3>
-          {expenses
-            .filter(expense => expense.category === "Food")
-            .map((expense, index) => (
-              <ExpenseCard
+        {categories.map(category => (
+          <div  key={category.name} className="mt-8">
+            <h3 className="text-lg font-semibold mb-4">{category.name}</h3>
+            {expenses
+               .filter(expense => expense.category === category.name)
+               .map((expense, index) =>
+                <ExpenseCard
                 key={index}
                 name={expense.name}
                 description={expense.description}
                 price={expense.price}
-                icon="🍽️"
-              />
-            ))}
-        </div>
-
-        {/* 🌐 Utilities */}
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4">Utilities</h3>
-          {expenses
-            .filter(expense => expense.category === "Utilities")
-            .map((expense, index) => (
-              <ExpenseCard
-                key={index}
-                name={expense.name}
-                description={expense.description}
-                price={expense.price}
-                icon="🌐"
-              />
-            ))}
-        </div>
-
-        {/* 🏋️ Health */}
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4">Health</h3>
-          {expenses
-            .filter(expense => expense.category === "Health")
-            .map((expense, index) => (
-              <ExpenseCard
-                key={index}
-                name={expense.name}
-                description={expense.description}
-                price={expense.price}
-                icon="🏋️"
-              />
-            ))}
-        </div>
-
-        {/* ☕ Leisure */}
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4">Leisure</h3>
-          {expenses
-            .filter(expense => expense.category === "Leisure")
-            .map((expense, index) => (
-              <ExpenseCard
-                key={index}
-                name={expense.name}
-                description={expense.description}
-                price={expense.price}
-                icon="☕"
-              />
-            ))}
-        </div>
+                icon={category.icon}
+                />
+              )
+            }
+          </div>
+        ))}
       </section>
     </PageWrapper>
     </BackgroundWrapper>
