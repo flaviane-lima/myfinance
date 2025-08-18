@@ -8,7 +8,7 @@ import Header from "./components/Header";
 
 
 //esses hooks busca os dados da API
-import { useEffect, useState } from "react"; 
+import { useEffect, useState } from "react";
 
 //ajuda a tipar os dados que vem da API
 type Expense = {
@@ -29,10 +29,10 @@ const BackgroundWrapper = styled.div`
 
 //arrays de categorias
 const categories = [
-  {name: "Alimentação", icon: "🍽️"},
-  {name: "Utilidades", icon: "🌐"},
-  {name: "Saúde", icon: "🏋️" },
-  {name: "Lazer", icon: "☕"},
+  { name: "Alimentação", icon: "🍽️" },
+  { name: "Utilidades", icon: "🌐" },
+  { name: "Saúde", icon: "🏋️" },
+  { name: "Lazer", icon: "☕" },
 ]
 
 
@@ -42,40 +42,38 @@ export default function Page() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
 
   //useEffect que faz a requisição para a API ao montar o componente
-  useEffect( () => {
+  useEffect(() => {
     fetch('/api/expenses') //endpoint mockado
-       .then(res => res.json()) //transforma resposta em JSON
-       .then(data => setExpenses(data)) //atualiza estado com os dados recebido
+      .then(res => res.json()) //transforma resposta em JSON
+      .then(data => setExpenses(data)) //atualiza estado com os dados recebido
   }, [])
 
   return (
-     <BackgroundWrapper>
-      
-    <PageWrapper>
-      <Header /> 
-      
-      <section>
-        <SectionHeader>Bem vindo ao seu gerenciador financeiro!</SectionHeader>
+    <BackgroundWrapper>
+      <PageWrapper>
+        <Header />
+        <section>
+          <SectionHeader>Bem vindo ao seu gerenciador financeiro!</SectionHeader>
 
-        {categories.map(category => (
-          <div  key={category.name} className="mt-8">
-            <h3 className="text-lg font-semibold mb-4">{category.name}</h3>
-            {expenses
-               .filter(expense => expense.category === category.name)
-               .map((expense, index) =>
-                <ExpenseCard
-                key={index}
-                name={expense.name}
-                description={expense.description}
-                price={expense.price}
-                icon={category.icon}
-                />
-              )
-            }
-          </div>
-        ))}
-      </section>
-    </PageWrapper>
+          {categories.map(category => (
+            <div key={category.name} className="mt-8">
+              <h3 className="text-lg font-semibold mb-4">{category.name}</h3>
+              {expenses
+                .filter(expense => expense.category === category.name)
+                .map((expense, index) =>
+                  <ExpenseCard
+                    key={index}
+                    name={expense.name}
+                    description={expense.description}
+                    price={expense.price}
+                    icon={category.icon}
+                  />
+                )
+              }
+            </div>
+          ))}
+        </section>
+      </PageWrapper>
     </BackgroundWrapper>
   )
 }
