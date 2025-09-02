@@ -7,7 +7,7 @@ const StyledHeader = styled.header`
   width: 100%;
   padding: 2rem 0rem;
   color: #1f2937;
-  text-align: left;
+  text-align: center;
   box-sizing: border-box;
   margin-bottom: 0.8rem;
 
@@ -16,7 +16,16 @@ const StyledHeader = styled.header`
     font-size: 1.875rem;
     font-weight: bold;
     margin: 0;
+
+    @media (max-width: 600px){
+     font-size: 1.5rem;
   }
+  
+  @media (max-width: 400px){
+     font-size: 1.25rem;
+  }
+  }
+
 `;
 
 export default function Header() {
