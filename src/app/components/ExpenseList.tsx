@@ -5,12 +5,25 @@ import { useEffect, useState } from "react";
 import ExpenseCard from "./ExpenseCard"
 import styled from "styled-components"
 
+
+const CategorySection = styled.section`
+  margin-top: 2rem;
+  width: 100%;
+
+
+`;
+
 // ✅ Styled component para o título da categoria
 const CategoryTitle = styled.h3`
   font-size: 1.125rem;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   color: #1f2937;
+  text-align: left;
+  max-width: 700px;
+  margin-left: 0;
+  margin-right: 0;
+
 `;
 
 
@@ -21,6 +34,13 @@ type Expense = {
   category: string
   price: number
 }
+
+// Container para centralizar os cards
+const CardsContainer = styled.div`
+  width: min(700px, 100% - 2rem);
+  margin-inline: auto;      /* centraliza */
+
+`;
 
 //arrays de categorias
 const categories = [
@@ -44,8 +64,9 @@ export default function ExpenseList() {
   return(
     <>
       {categories.map(category => (
-        <div key={category.name} className="mt-8">
-          <CategoryTitle>{category.name}</CategoryTitle>
+        <CategorySection key={category.name}>
+          <CardsContainer>
+            <CategoryTitle>{category.name}</CategoryTitle>
           {expenses
             .filter(expense => expense.category === category.name)
             .map((expense, index) => (
@@ -57,7 +78,8 @@ export default function ExpenseList() {
                 icon={category.icon}
               />
             ))}
-        </div>
+            </CardsContainer>
+        </CategorySection>
       ))}
     </>
   );
