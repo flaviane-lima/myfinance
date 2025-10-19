@@ -3,6 +3,7 @@
 import ExpenseList from "../../components/ExpenseList";
 import styled from "styled-components";
 import HomeButton from "@/app/components/HomeButton/HomeButton";
+import TopMenu from "@/app/components/Menu/TopMenu";
 
 const NavBar = styled.nav`
   position: sticky;
@@ -11,7 +12,8 @@ const NavBar = styled.nav`
   padding: 1rem;
   z-index: 10;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between; // 👈 separa os dois lados
+  align-items: center;
 `;
 
 
@@ -25,12 +27,14 @@ const PageContainer = styled.div`
 export default function List() {
 
     return(
+      <div>
         <PageContainer>
         <NavBar>
           <HomeButton />
+          <TopMenu /> 
         </NavBar>
             <ExpenseList />
         </PageContainer>    
-        
+      </div>  
     )
 }
