@@ -71,7 +71,7 @@ const MenuItem = styled.li`
 `
 
 const menus = [
-    { title: "Página 1", path: "/your-path" },
+    { title: "Cadastrar", path: "/dashboard/register" },
     { title: "Página 1", path: "/your-path" },
     { title: "Página 1", path: "/your-path" },
 
