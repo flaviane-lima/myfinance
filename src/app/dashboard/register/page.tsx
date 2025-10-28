@@ -33,7 +33,7 @@ export default function Page() {
     </label> 
     <label> 
       Preço:
-      <input type="number" name="price" />
+      <input type="number" name="price" step="0.01" />
     </label>  
       <button type="submit">Submit</button>
     </form>
