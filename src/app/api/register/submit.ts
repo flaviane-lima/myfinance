@@ -1,14 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
-
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-type ItemData = {
-  name: string
-  description: string
-  category: string
-  price: number
-}
+const prisma = new PrismaClient()
+
 
 export default async function handler(
   req: NextApiRequest,
@@ -34,21 +28,29 @@ export default async function handler(
   return res.status(400).json({ message: 'O campo "price" deve ser um número válido.' })
   }
 
-  //criação do objeto tipado
-  const item: ItemData= {
-    name: data.name,
-    description: data.description,
-    category: data.category,
-    price: Number(data.price)
+  //buscar ou criar a categoria
+  try {
+    const category = await prisma.category.upsert({
+      where: { name: data.category },
+      update: {},
+      create: { name: data.category },
+
+    })
+
+    //cria o gasto vinculado a categoria
+    const creatd = await prisma.expense.create({
+      data: {
+        name: data.name,
+        description: data.description,
+        price: Number(data.price),
+        categoryId: category.id,
+      },
+    })
+  } catch (error) {
+    console.error('Erro ao salvar no banco', error)
+    return res.status(500).json({ message: 'Erro interno ao salvar gasto' })
 
   }
 
-  const id = await createItem(item)
 
-  res.status(200).json({ id })
-}
-
-async function createItem(data: ItemData) {
-  console.log("Dados recebidos:", data)
-  return Math.floor(Math.random() * 1000)
 }
