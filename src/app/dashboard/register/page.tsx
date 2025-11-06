@@ -6,15 +6,35 @@ export default function Page() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
  
+    //captura os dados do formulário
     const formData = new FormData(event.currentTarget)
-    const response = await fetch('/api/submit', {
+
+    //transformando os dados do formulário em um objeto
+    const data = Object.fromEntries(formData.entries())
+
+    //validação dos campos para ver se está tudo preenchido
+    if (!data.name || !data.description || !data.category || !data.price) {
+      alert('Os campos devem ser preenchido corretamente')
+
+      return
+    }
+
+    // enviando os dados para o backend
+    const response = await fetch('/api/register/submit', {
       method: 'POST',
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
     })
- 
-    // Handle response if necessary
-    const data = await response.json()
-    // ...
+    
+    //lê a resposta que a API envia
+    const result = await response.json()
+    if (response.ok) {
+      alert('Cadastro realizado com sucesso')
+    } else {
+      alert(`Erro: ${result.message || 'Não foi possível cadastrar'}`)
+    }
   }
  
   return (
@@ -24,7 +44,7 @@ export default function Page() {
       <input type="text" name="name" />
     </label> 
     <label>
-      Desrição:
+      Descrição:
       <input type="text" name="description" />
     </label> 
     <label>
