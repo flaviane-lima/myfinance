@@ -7,6 +7,9 @@ export default function Page() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
+    // Pegamos a referência do form ANTES do await
+    const form = event.currentTarget
+
     //captura os dados do formulário
     const formData = new FormData(event.currentTarget)
 
@@ -28,11 +31,15 @@ export default function Page() {
       },
       body: JSON.stringify(data),
     })
+    console.log("STATUS DA API:", response.status)
 
     //lê a resposta que a API envia
     const result = await response.json()
+    
     if (response.ok) {
       alert('Cadastro realizado com sucesso')
+      // Agora funciona sem erro
+      form.reset()
     } else {
       alert(`Erro: ${result.message || 'Não foi possível cadastrar'}`)
     }
