@@ -18,9 +18,12 @@ export async function POST(req:Request) {
   if (!data.category) {
     return new Response(JSON.stringify({ message: 'O campo categoria é obrigatório'}), { status: 400})
   }
-  if (isNaN(Number(data.price))) {
-  return new Response(JSON.stringify({ message: 'O campo preço é obrigatório'}), { status: 400})
-  }
+  if (!data.price || isNaN(parseFloat(data.price))) {
+  return new Response(JSON.stringify({ message: 'O campo preço é obrigatório' }), {
+    status: 400,
+  })
+}
+
 
   //buscar ou criar a categoria
   try {
