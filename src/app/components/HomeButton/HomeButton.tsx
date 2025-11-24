@@ -33,7 +33,7 @@ const StyledLink = styled(Link).attrs({
 // função
 export default function HomeButton() {
     return (
-        <StyledLink href="/">
+        <StyledLink href="/dashboard/expenseList">
             <FaHome />
         </StyledLink>
     )
