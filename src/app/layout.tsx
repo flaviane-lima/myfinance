@@ -3,11 +3,11 @@ import StyledComponentsRegistry from './lib/registry';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html>
-      <body>
+    <html lang="pt-br">
+      <body className="bg-white text-black">
         <StyledComponentsRegistry>
-          <main>{children}</main>
-          </StyledComponentsRegistry>
+          {children}
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
