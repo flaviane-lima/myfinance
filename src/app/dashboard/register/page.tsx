@@ -1,11 +1,12 @@
 'use client'
 
 import { FormEvent } from 'react'
- 
+import DashboardLayout from '@/app/components/DashboardLayout'
+
 export default function Page() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
- 
+
     //captura os dados do formulário
     const formData = new FormData(event.currentTarget)
 
@@ -27,7 +28,7 @@ export default function Page() {
       },
       body: JSON.stringify(data),
     })
-    
+
     //lê a resposta que a API envia
     const result = await response.json()
     if (response.ok) {
@@ -36,27 +37,34 @@ export default function Page() {
       alert(`Erro: ${result.message || 'Não foi possível cadastrar'}`)
     }
   }
- 
+
   return (
-    <form onSubmit={onSubmit}>
-    <label>
-      Nome:
-      <input type="text" name="name" />
-    </label> 
-    <label>
-      Descrição:
-      <input type="text" name="description" />
-    </label> 
-    <label>
-      Categoria:  
-      <input type="text" name="category" />
-    </label> 
-    <label> 
-      Preço:
-      <input type="number" name="price" step="0.01" />
-    </label>  
-      <button type="submit">Submit</button>
-    </form>
-    
+    <DashboardLayout>
+    <div className='min-h-screen bg-gray-50 py-10 px-4'>
+      <form onSubmit={onSubmit} className='max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg space-y-4'>
+        <div>
+          <label htmlFor='name' className='block text-sm font-semibold text-gray-800 mb-1'>Nome</label>
+
+          <input type="text" name="name" id='name' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui' />
+        </div>
+
+        <div>
+        <label htmlFor='description' className='block text-sm font-semibold text-gray-800 mb-1'>Descrição</label>
+          <input type="text" name="description" id='description' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui'/>
+        </div>
+        <div>
+        <label htmlFor='category' className='block text-sm font-semibold text-gray-800 mb-1'>Categoria</label>
+          <input type="text" name="category" id='category' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui'/>
+        </div>
+        <div>
+        <label htmlFor='price' className='block text-sm font-semibold text-gray-800 mb-1'>Preço</label>
+          <input type="number" name="price" step="0.01" id='price' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui'/>
+        </div>
+        <button type="submit" className='w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition'>enviar</button>
+      </form>
+
+    </div>
+    </DashboardLayout>
+
   )
 }
