@@ -30,10 +30,15 @@ const CategoryTitle = styled.h3`
 
 //ajuda a tipar os dados que vem da API
 type Expense = {
+  id: number;
   name: string
   description: string
-  category: string
   price: number
+  categoryId: number
+  category: {
+    id: number
+    name: string
+  }
 }
 
 // Container para centralizar os cards
@@ -69,7 +74,7 @@ export default function ExpenseList() {
           <CardsContainer>
             <CategoryTitle>{category.name}</CategoryTitle>
           {expenses
-            .filter(expense => expense.category === category.name)
+            .filter(expense => expense.category.name === category.name)
             .map((expense, index) => (
               <ExpenseCard
                 key={index}
