@@ -8,7 +8,7 @@ export default function Page() {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-     setIsSubmitting(true) // ativa o estado
+    setIsSubmitting(true) // ativa o estado
 
     // Pegamos a referência do form ANTES do await
     const form = event.currentTarget
@@ -38,7 +38,7 @@ export default function Page() {
 
     //lê a resposta que a API envia
     const result = await response.json()
-    
+
     if (response.ok) {
       alert('Cadastro realizado com sucesso')
       // Agora funciona sem erro
@@ -50,36 +50,36 @@ export default function Page() {
 
   return (
     <DashboardLayout>
-    <div className='min-h-screen bg-gray-50 py-10 px-4'>
-      <form onSubmit={onSubmit} className='max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg space-y-4'>
-        <div>
-          <label htmlFor='name' className='block text-sm font-semibold text-gray-800 mb-1'>Nome</label>
+      <div className='min-h-screen bg-gray-50 py-10 px-4'>
+        <form onSubmit={onSubmit} className='max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg space-y-4'>
+          <div>
+            <label htmlFor='name' className='block text-sm font-semibold text-gray-800 mb-1'>Nome</label>
 
-          <input type="text" name="name" id='name' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui' />
-        </div>
+            <input type="text" name="name" id='name' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui' />
+          </div>
 
-        <div>
-        <label htmlFor='description' className='block text-sm font-semibold text-gray-800 mb-1'>Descrição</label>
-          <input type="text" name="description" id='description' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui'/>
-        </div>
-        <div>
-        <label htmlFor='category' className='block text-sm font-semibold text-gray-800 mb-1'>Categoria</label>
-           <select name="category" id="category-select"  className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-  <option value="">--Selecione--</option>
-  <option value="alimentação">Alimentação</option>
-  <option value="utilidades">Utilidades</option>
-  <option value="saúde">Saúde</option>
-  <option value="lazer">Lazer</option>
-</select>
-        </div>
-        <div>
-        <label htmlFor='price' className='block text-sm font-semibold text-gray-800 mb-1'>Preço</label>
-          <input type="number" name="price" step="0.01" id='price' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui'/>
-        </div>
-        <button type="submit" className='w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition'>{isSubmitting ? 'Enviando...' : 'Enviar'}</button>
-      </form>
+          <div>
+            <label htmlFor='description' className='block text-sm font-semibold text-gray-800 mb-1'>Descrição</label>
+            <input type="text" name="description" id='description' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui' />
+          </div>
+          <div>
+            <label htmlFor='category' className='block text-sm font-semibold text-gray-800 mb-1'>Categoria</label>
+            <select name="category" id="category-select" className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <option value="">--Selecione--</option>
+              <option value="alimentação">Alimentação</option>
+              <option value="utilidades">Utilidades</option>
+              <option value="saúde">Saúde</option>
+              <option value="lazer">Lazer</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor='price' className='block text-sm font-semibold text-gray-800 mb-1'>Preço</label>
+            <input type="number" name="price" step="0.01" id='price' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui' />
+          </div>
+          <button type="submit" className='w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition'>{isSubmitting ? 'Enviando...' : 'Enviar'}</button>
+        </form>
 
-    </div>
+      </div>
     </DashboardLayout>
 
   )
