@@ -64,7 +64,13 @@ export default function Page() {
         </div>
         <div>
         <label htmlFor='category' className='block text-sm font-semibold text-gray-800 mb-1'>Categoria</label>
-          <input type="text" name="category" id='category' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui'/>
+           <select name="category" id="category-select"  className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+  <option value="">--Selecione--</option>
+  <option value="alimentação">Alimentação</option>
+  <option value="utilidades">Utilidades</option>
+  <option value="saúde">Saúde</option>
+  <option value="lazer">Lazer</option>
+</select>
         </div>
         <div>
         <label htmlFor='price' className='block text-sm font-semibold text-gray-800 mb-1'>Preço</label>
