@@ -1,10 +1,18 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, useEffect } from 'react'
+import { Category } from '@prisma/client'
 import DashboardLayout from '@/app/components/DashboardLayout'
 
 export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false) // controla o clique
+  const [categorias, setCategoria] = useState<Category[]>([]);
+
+  useEffect(() => {
+    fetch('/api/category') 
+      .then(res => res.json()) //transforma resposta em JSON
+      .then(data => setCategoria(data)) //atualiza estado com os dados recebido
+  }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -66,10 +74,9 @@ export default function Page() {
             <label htmlFor='category' className='block text-sm font-semibold text-gray-800 mb-1'>Categoria</label>
             <select name="category" id="category-select" className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
               <option value="">--Selecione--</option>
-              <option value="alimentação">Alimentação</option>
-              <option value="utilidades">Utilidades</option>
-              <option value="saúde">Saúde</option>
-              <option value="lazer">Lazer</option>
+              {categorias.map(cat => (
+                <option key={cat.id} value={cat.name}>{cat.name}</option>
+              ))}
             </select>
           </div>
           <div>
