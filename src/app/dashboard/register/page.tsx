@@ -9,10 +9,14 @@ export default function Page() {
   const [categorias, setCategoria] = useState<Category[]>([]);
 
   useEffect(() => {
-    fetch('/api/category') 
-      .then(res => res.json()) //transforma resposta em JSON
-      .then(data => setCategoria(data)) //atualiza estado com os dados recebido
-  }, []);
+  fetch('/api/category') 
+    .then(res => res.json())
+    .then(data => {
+      console.log('Categorias recebidas:', data) // mostra no console
+      setCategoria(data) // atualiza o estado
+    })
+}, [])
+
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
