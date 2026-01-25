@@ -87,7 +87,7 @@ export default function Page() {
             <label htmlFor='price' className='block text-sm font-semibold text-gray-800 mb-1'>Preço</label>
             <input type="number" name="price" step="0.01" id='price' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui' />
           </div>
-          <button type="submit" className='w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition'>{isSubmitting ? 'Enviando...' : 'Enviar'}</button>
+          <button type="submit" className='w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition'>{isSubmitting ? 'Enviar...' : 'Enviar'}</button>
         </form>
 
       </div>
