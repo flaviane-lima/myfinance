@@ -67,6 +67,24 @@ export default function ExpenseList() {
       .then(data => setExpenses(data)) //atualiza estado com os dados recebido
   }, []);
 
+  //para deletar
+  const handleDelete = async (id: number) => {
+    if (!confirm("Tem certeza que deseja deletar?")) return;
+
+    const response = await fetch('/api/expenses', {
+      method: 'DELETE',
+      headers: { 'Content-Type' : 'application/json'},
+      body: JSON.stringify({ id }),
+    });
+
+    if (response.ok) {
+      setExpenses(prev => prev.filter (expense => expense.id !== id));
+      alert("Deletado com sucesso")
+    } else {
+      alert("Erro ao deletar");
+    }
+  }
+
   return(
     <>
       {categories.map(category => (
@@ -78,10 +96,12 @@ export default function ExpenseList() {
             .map((expense, index) => (
               <ExpenseCard
                 key={index}
+                id={expense.id}
                 name={expense.name}
                 description={expense.description}
                 price={expense.price}
                 icon={category.icon}
+                onDelete={handleDelete}
               />
             ))}
             </CardsContainer>
