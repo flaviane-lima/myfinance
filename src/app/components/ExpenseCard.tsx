@@ -3,10 +3,12 @@
 import styled from "styled-components";
 
 type ExpenseProps = {
+  id: number;
   name: string;
   description: string;
   price: number;
   icon?: string;
+  onDelete? : (id : number ) => void;
 };
 
 
@@ -121,7 +123,7 @@ flex-shrink: 0; // 🔹 Impede que o preço encolha
 
 `;
 
-export default function ExpenseCard({ name, description, price, icon }: ExpenseProps) {
+export default function ExpenseCard({ id, name, description, price, icon, onDelete }: ExpenseProps) {
   return (
     <Card>
       <LeftContent>
@@ -132,6 +134,9 @@ export default function ExpenseCard({ name, description, price, icon }: ExpenseP
         </Texts>
       </LeftContent>
       <Price>R$ {price.toFixed(2).replace('.', ',')}</Price>
+      { onDelete && (
+        <button onClick = {() => onDelete(id)}>🗑️</button>
+      )}
     </Card>
   );
 }
