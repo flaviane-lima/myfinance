@@ -67,7 +67,7 @@ export default function ExpenseList() {
       .then(data => setExpenses(data)) //atualiza estado com os dados recebido
   }, []);
 
-  //para deletar
+  //Função responsável por deletar uma despesa via API
   const handleDelete = async (id: number) => {
     if (!confirm("Tem certeza que deseja deletar?")) return;
 
