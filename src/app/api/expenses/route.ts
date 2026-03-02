@@ -54,9 +54,36 @@ export async function POST(req:Request) {
 
 }
 
+// listar os dados
 export async function GET() {
   const expenses = await prisma.expense.findMany({
     include: { category: true }
   })
   return NextResponse.json(expenses, { status: 200 })
+}
+
+// deletar informações desnecessárias
+export async function DELETE(req:Request) {
+
+  try {
+    const { id } = await req.json();
+
+    if (!id) {
+      return NextResponse.json({message: "ID é obrigatório"}, {status: 400 });
+    }
+
+    //comando prisma
+    await prisma.expense.delete({
+
+      where : {id: Number(id)},
+
+    });
+    return NextResponse.json({message: `Item ${id} deletado` }, {status: 200})
+  } catch (error) {
+
+    console.error("Erro ao deletar:", error)
+    return NextResponse.json({message: "Erro ao deletar"}, {status: 400})
+
+  }
+  
 }
