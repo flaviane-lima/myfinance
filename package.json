@@ -28,6 +28,7 @@
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.22",
     "babel-plugin-styled-components": "^2.1.4",
+    "baseline-browser-mapping": "^2.10.8",
     "eslint": "^9",
     "eslint-config-next": "15.3.5",
     "postcss": "^8.5.6",
@@ -36,8 +37,7 @@
     "tsx": "^4.20.6",
     "typescript": "^5"
   },
-  
-  "prisma": { 
+  "prisma": {
     "seed": "tsx prisma/seed.ts"
-  }  
+  }
 }

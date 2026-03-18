@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 const prisma = new PrismaClient()
 
 //cadastrar os dados
-export async function POST(req:Request) {
+export async function POST(req: Request) {
 
   const data = await req.json()
   console.log('📥 Dados recebidos do formulário:', data)
@@ -14,14 +14,14 @@ export async function POST(req:Request) {
     return NextResponse.json({ message: 'O campo nome é obrigatório' }, { status: 400 })
   }
   if (!data.description) {
-   return NextResponse.json({ message: 'O campo descrição é obrigatório' }, { status: 400 })
+    return NextResponse.json({ message: 'O campo descrição é obrigatório' }, { status: 400 })
   }
   if (!data.category) {
     return NextResponse.json({ message: 'O campo categoria é obrigatório' }, { status: 400 })
   }
   if (!data.price || isNaN(parseFloat(data.price))) {
-  return  NextResponse.json({ message: 'O campo preço é obrigatório' }, { status: 400 })
-}
+    return NextResponse.json({ message: 'O campo preço é obrigatório' }, { status: 400 })
+  }
 
 
   //buscar ou criar a categoria
@@ -42,7 +42,7 @@ export async function POST(req:Request) {
         categoryId: category.id,
       },
     })
-    return  NextResponse.json(
+    return NextResponse.json(
       { message: 'Gasto criado com sucesso', data: created },
       { status: 201 }
     )
@@ -50,7 +50,7 @@ export async function POST(req:Request) {
   } catch (error) {
     console.error('Erro ao salvar no banco', error)
     return NextResponse.json({ message: 'Erro interno ao salvar gasto' }, { status: 500 })
-  }  
+  }
 
 }
 
@@ -63,27 +63,27 @@ export async function GET() {
 }
 
 // deletar informações desnecessárias
-export async function DELETE(req:Request) {
+export async function DELETE(req: Request) {
 
   try {
     const { id } = await req.json();
 
     if (!id) {
-      return NextResponse.json({message: "ID é obrigatório"}, {status: 400 });
+      return NextResponse.json({ message: "ID é obrigatório" }, { status: 400 });
     }
 
     //comando prisma
     await prisma.expense.delete({
 
-      where : {id: Number(id)},
+      where: { id: Number(id) },
 
     });
-    return NextResponse.json({message: `Item ${id} deletado` }, {status: 200})
+    return NextResponse.json({ message: `Item ${id} deletado` }, { status: 200 })
   } catch (error) {
 
     console.error("Erro ao deletar:", error)
-    return NextResponse.json({message: "Erro ao deletar"}, {status: 400})
+    return NextResponse.json({ message: "Erro ao deletar" }, { status: 400 })
+
 
   }
-  
 }
