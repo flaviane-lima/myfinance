@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server'
+import { json } from 'stream/consumers'
 
 const prisma = new PrismaClient()
 
@@ -86,4 +87,38 @@ export async function DELETE(req: Request) {
 
 
   }
+
+}
+
+// atualiza os dados
+export async function PUT(req: Request) {
+
+  try {
+    //extrair os dados enviado pelo o front
+    const { id, name, description, price} = await req.json();
+
+    // valida se o id foi informado
+    if (!id) {
+      return NextResponse.json(
+        { message: "ID é obrigatório" },
+        { status: 400}
+      );
+    }
+
+    //atualiza o registro no banco, entra o comando do prisma
+    const updatedExpense = await prisma.expense.update({
+      where: { id: Number(id) },
+      data: { name, description, price },
+    });
+
+    //retorna o objeto atualizado
+    return NextResponse.json(updatedExpense, { status: 200 });
+
+  } catch (error) {
+    console.error("Ero ao atualizar:", error);
+    return NextResponse.json(
+      { message: "Erro ao atualizar" },
+      { status: 400 },
+    );
+  } 
 }
