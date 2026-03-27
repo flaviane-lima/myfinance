@@ -7,6 +7,8 @@ import DashboardLayout from '@/app/components/DashboardLayout'
 export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false) // controla o clique
   const [categorias, setCategoria] = useState<Category[]>([]);
+  const [isEdit, setIsEdit] = useState(false)
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
   useEffect(() => {
   fetch('/api/category') 
