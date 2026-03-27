@@ -9,6 +9,7 @@ type ExpenseProps = {
   price: number;
   icon?: string;
   onDelete? : (id : number ) => void;
+  onEdit: (id: number) => void;
 };
 
 

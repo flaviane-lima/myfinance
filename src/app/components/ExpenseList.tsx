@@ -6,6 +6,11 @@ import ExpenseCard from "./ExpenseCard"
 
 import styled from "styled-components"
 
+//tipagem dos props(recebe a função do pai)
+type ExpenseListProps = {
+  onEdit: (id : number) => void;
+}
+
 
 const CategorySection = styled.section`
   margin-top: 2rem;
@@ -55,8 +60,8 @@ const categories = [
   { name: "Saúde", icon: "🏋️" },
   { name: "Lazer", icon: "☕" },
 ]
-
-export default function ExpenseList() {
+//agora o componente RECEBE onEdit
+export default function ExpenseList({onEdit}: ExpenseListProps) {
   //estado local que armazenará as despesas recebida da API;
   const [expenses, setExpenses] = useState<Expense[]>([]);
 
@@ -102,6 +107,7 @@ export default function ExpenseList() {
                 price={expense.price}
                 icon={category.icon}
                 onDelete={handleDelete}
+                onEdit={onEdit}
               />
             ))}
             </CardsContainer>
