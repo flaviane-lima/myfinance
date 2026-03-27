@@ -10,6 +10,12 @@ export default function Page() {
   const [isEdit, setIsEdit] = useState(false)
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
+  // ativa edição e define item selecionado
+  const handleEdit = (id:number) => {
+    setIsEdit(true) // tudo que começa com set é função
+    setSelectedId(id) // vai guardar o item que foi clicado
+  }
+
   useEffect(() => {
   fetch('/api/category') 
     .then(res => res.json())
