@@ -42,30 +42,44 @@ export default function Page() {
     //validação dos campos para ver se está tudo preenchido
     if (!data.name || !data.description || !data.category || !data.price) {
       alert('Os campos devem ser preenchido corretamente')
-
+       setIsSubmitting(false)
       return
     }
-
-    // enviando os dados para o backend
-    const response = await fetch('/api/expenses', {
+     
+    let response
+    //editando e criando
+    if (isEdit && selectedId !== null) {
+      response = await fetch('/api/expense', {
+        method: 'PUT',
+        headers: { 'Conten-Type': 'application/json'},
+      })
+    } else {
+      // enviando os dados para o backend
+     response = await fetch('/api/expenses', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data),
     })
+    }
+
     console.log("STATUS DA API:", response.status)
 
     //lê a resposta que a API envia
     const result = await response.json()
+       console.log("Resposta do back:", result)
 
     if (response.ok) {
-      alert('Cadastro realizado com sucesso')
+      alert('Operação realizada com sucesso')
       // Agora funciona sem erro
       form.reset()
+      setIsEdit(false)
+      setSelectedId(null)
     } else {
-      alert(`Erro: ${result.message || 'Não foi possível cadastrar'}`)
+      alert(`Erro: ${result.message || 'Não foi possível processar'}`)
     }
+    setIsSubmitting(false)
   }
 
   return (
