@@ -9,7 +9,7 @@ type ExpenseProps = {
   price: number;
   icon?: string;
   onDelete? : (id : number ) => void;
-  onEdit: (id: number) => void;
+  onEdit?: (id: number) => void;
 };
 
 
@@ -37,8 +37,8 @@ const LeftContent = styled.div`
 display: flex;
 align-items: center;
 gap: 0.75rem;
-  flex: 1;
-  min-width: 0; // 🔹 Permite que o conteúdo encolha
+
+min-width: 0; // 🔹 Permite que o conteúdo encolha
 
 @media (max-width: 480px) {
     gap: 0.5rem;
@@ -121,10 +121,23 @@ flex-shrink: 0; // 🔹 Impede que o preço encolha
     font-size: 0.875rem;
     margin-left: 0.5rem;
      margin-right: 0.25rem;
-
+}
 `;
 
-export default function ExpenseCard({ id, name, description, price, icon, onDelete }: ExpenseProps) {
+const Actions = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 1rem;
+`;
+
+const RightContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+
+export default function ExpenseCard({ id, name, description, price, icon, onDelete, onEdit }: ExpenseProps) {
   return (
     <Card>
       <LeftContent>
@@ -134,10 +147,17 @@ export default function ExpenseCard({ id, name, description, price, icon, onDele
           <Description>{description}</Description>
         </Texts>
       </LeftContent>
+      <RightContent>
       <Price>R$ {price.toFixed(2).replace('.', ',')}</Price>
+      <Actions>
       { onDelete && (
         <button onClick = {() => onDelete(id)}>🗑️</button>
       )}
+      { onEdit && (
+        <button onClick = {() => onEdit(id)}>📝</button>
+      )}
+      </Actions>
+      </RightContent>
     </Card>
   );
 }
