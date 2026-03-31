@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server'
-import { json } from 'stream/consumers'
+
 
 const prisma = new PrismaClient()
 
