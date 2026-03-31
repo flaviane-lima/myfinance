@@ -9,7 +9,7 @@ type ExpenseProps = {
   price: number;
   icon?: string;
   onDelete? : (id : number ) => void;
-  onEdit?: (id: number) => void;
+  onEdit?: () => void;
 };
 
 
@@ -154,7 +154,7 @@ export default function ExpenseCard({ id, name, description, price, icon, onDele
         <button onClick = {() => onDelete(id)}>🗑️</button>
       )}
       { onEdit && (
-        <button onClick = {() => onEdit(id)}>📝</button>
+        <button onClick = {onEdit}>📝</button>
       )}
       </Actions>
       </RightContent>
