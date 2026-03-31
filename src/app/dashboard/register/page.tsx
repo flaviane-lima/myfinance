@@ -3,7 +3,7 @@
 import { FormEvent, useState, useEffect } from 'react'
 import { Category } from '@prisma/client'
 import DashboardLayout from '@/app/components/DashboardLayout'
-import ExpenseList from '@/app/components/ExpenseList'
+import { useSearchParams } from 'next/navigation'
 
 export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false) // controla o clique
@@ -11,20 +11,53 @@ export default function Page() {
   const [isEdit, setIsEdit] = useState(false)
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  // ativa edição e define item selecionado
-  const handleEdit = (id:number) => {
-    setIsEdit(true) // tudo que começa com set é função
-    setSelectedId(id) // vai guardar o item que foi clicado
-  }
+  //adicionando novos estados
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [price, setPrice] = useState('');
+
+  //pegar o (id) da URL
+  const searchParams = useSearchParams()
+  const id = searchParams.get('id')
+
 
   useEffect(() => {
-  fetch('/api/category') 
-    .then(res => res.json())
-    .then(data => {
-      console.log('Categorias recebidas:', data) // mostra no console
-      setCategoria(data) // atualiza o estado
-    })
-}, [])
+    fetch('/api/category')
+      .then(res => res.json())
+      .then(data => {
+        console.log('Categorias recebidas:', data) // mostra no console
+        setCategoria(data) // atualiza o estado
+      })
+  }, [])
+
+  // ✅ CARREGAR DADOS PARA EDIÇÃO
+  useEffect(() => {
+    if (id) {
+      fetch('/api/expenses')
+        .then(res => res.json())
+        .then(data => {
+          const expense = data.find((item: any) => item.id === Number(id))
+
+          if (expense) {
+            setName(expense.name ?? '')
+            setDescription(expense.description ?? '')
+            setCategory(expense.category.name ?? '')
+            setPrice(expense.price != null ? String(expense.price) : '')
+
+            setSelectedId(expense.id)
+            setIsEdit(true)
+          }
+        })
+    } else {
+      //limpa o formulário quando não tem id
+      setName('')
+      setDescription('')
+      setCategory('')
+      setIsEdit(false)
+      setSelectedId(null)
+    }
+  }, [id])
 
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -43,41 +76,48 @@ export default function Page() {
     //validação dos campos para ver se está tudo preenchido
     if (!data.name || !data.description || !data.category || !data.price) {
       alert('Os campos devem ser preenchido corretamente')
-       setIsSubmitting(false)
+      setIsSubmitting(false)
       return
     }
-     
+
     let response
     //editando e criando
     if (isEdit && selectedId !== null) {
-      response = await fetch('/api/expense/${selectedId}', {
-        method: 'PUT',
-        headers: { 
+  response = await fetch('/api/expenses', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      id: selectedId,
+      name: data.name,
+      description: data.description,
+      category: data.category,   // se quiser atualizar categoria também
+      price: Number(data.price),
+    }),
+  })
+    } else {
+      // enviando os dados para o backend
+      response = await fetch('/api/expenses', {
+        method: 'POST',
+        headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data),
       })
-    } else {
-      // enviando os dados para o backend
-     response = await fetch('/api/expenses', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data),
-    })
     }
 
     console.log("STATUS DA API:", response.status)
 
     //lê a resposta que a API envia
     const result = await response.json()
-       console.log("Resposta do back:", result)
+    console.log("Resposta do back:", result)
 
     if (response.ok) {
       alert('Operação realizada com sucesso')
       // Agora funciona sem erro
-      form.reset()
+      setName('')
+      setDescription('')
+      setCategory('')
+      setPrice('')
       setIsEdit(false)
       setSelectedId(null)
     } else {
@@ -89,20 +129,52 @@ export default function Page() {
   return (
     <DashboardLayout>
       <div className='min-h-screen bg-gray-50 py-10 px-4'>
+      
         <form onSubmit={onSubmit} className='max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg space-y-4'>
           <div>
-            <label htmlFor='name' className='block text-sm font-semibold text-gray-800 mb-1'>Nome</label>
+            <label htmlFor='name' className='block text-sm font-semibold text-gray-800 mb-1'>
+              Nome
+            </label>
 
-            <input type="text" name="name" id='name' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui' />
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm'
+              placeholder='digite aqui'
+            />
           </div>
 
           <div>
-            <label htmlFor='description' className='block text-sm font-semibold text-gray-800 mb-1'>Descrição</label>
-            <input type="text" name="description" id='description' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui' />
+            <label htmlFor='description' className='block text-sm font-semibold text-gray-800 mb-1'>
+              Descrição
+            </label>
+
+            <input
+              type="text"
+              name="description"
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm'
+              placeholder='digite aqui'
+            />
           </div>
+
           <div>
-            <label htmlFor='category' className='block text-sm font-semibold text-gray-800 mb-1'>Categoria</label>
-            <select name="category" id="category-select" className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <label htmlFor='category' className='block text-sm font-semibold text-gray-800 mb-1'>
+              Categoria
+            </label>
+
+            <select
+              name="category"
+              id="category-select"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+            >
               <option value="">--Selecione--</option>
               {categorias.map(cat => (
                 <option key={cat.id} value={cat.name}>{cat.name}</option>
@@ -111,15 +183,23 @@ export default function Page() {
           </div>
           <div>
             <label htmlFor='price' className='block text-sm font-semibold text-gray-800 mb-1'>Preço</label>
-            <input type="number" name="price" step="0.01" id='price' className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' placeholder='digite aqui' />
+            <input
+              type="number"
+              name="price"
+              step="0.01"
+              id="price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm'
+              placeholder='digite aqui'
+            />
           </div>
-          <button type="submit" className='w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition'>{isSubmitting 
-    ? 'Enviando...' 
-    : isEdit 
-      ? 'Atualizar' 
-      : 'Enviar'}</button>
+          <button type="submit" className='w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition'>{isSubmitting
+            ? 'Enviando...'
+            : isEdit
+              ? 'Atualizar'
+              : 'Enviar'}</button>
         </form>
-        <ExpenseList onEdit={handleEdit}/>
 
       </div>
     </DashboardLayout>
