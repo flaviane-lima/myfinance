@@ -59,12 +59,16 @@ export default function Page() {
     }
   }, [id])
 
-
+  // Função chamada quando o formulário é enviado
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setIsSubmitting(true) // ativa o estado
 
-    // Pegamos a referência do form ANTES do await
+    // Evita o comportamento padrão do form (recarregar a página)
+    event.preventDefault()
+
+    // Ativa o estado de envio (botão fica "Enviando...")
+    setIsSubmitting(true)
+
+    // Referência ao formulário antes de usar await
     const form = event.currentTarget
 
     //captura os dados do formulário
@@ -73,7 +77,7 @@ export default function Page() {
     //transformando os dados do formulário em um objeto
     const data = Object.fromEntries(formData.entries())
 
-    //validação dos campos para ver se está tudo preenchido
+    // Validação: verifica se todos os campos foram preenchidos
     if (!data.name || !data.description || !data.category || !data.price) {
       alert('Os campos devem ser preenchido corretamente')
       setIsSubmitting(false)
@@ -81,21 +85,21 @@ export default function Page() {
     }
 
     let response
-    //editando e criando
+    // Se estiver em modo edição e houver id selecionado → PUT
     if (isEdit && selectedId !== null) {
-  response = await fetch('/api/expenses', {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      id: selectedId,
-      name: data.name,
-      description: data.description,
-      category: data.category,   // se quiser atualizar categoria também
-      price: Number(data.price),
-    }),
-  })
+      response = await fetch('/api/expenses', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: selectedId,
+          name: data.name,
+          description: data.description,
+          category: data.category,   // se quiser atualizar categoria também
+          price: Number(data.price),
+        }),
+      })
     } else {
-      // enviando os dados para o backend
+      // Caso contrário → POST (novo registro)
       response = await fetch('/api/expenses', {
         method: 'POST',
         headers: {
@@ -105,16 +109,17 @@ export default function Page() {
       })
     }
 
+    // Mostra status da API no console
     console.log("STATUS DA API:", response.status)
 
     //lê a resposta que a API envia
     const result = await response.json()
     console.log("Resposta do back:", result)
-    
+
     // Trata a resposta da API após o envio do formulário
     if (response.ok) {
       alert('Operação realizada com sucesso')
-      
+
       // Limpa os campos do formulário, voltando os estados para vazio
       setName('')
       setDescription('')
@@ -123,7 +128,7 @@ export default function Page() {
       setIsEdit(false)
       setSelectedId(null)
     } else {
-       // Caso erro: mostra alerta com mensagem do backend
+      // Caso erro: mostra alerta com mensagem do backend
       alert(`Erro: ${result.message || 'Não foi possível processar'}`)
     }
     // Finaliza o estado de envio, liberando o botão novamente
@@ -133,7 +138,7 @@ export default function Page() {
   return (
     <DashboardLayout>
       <div className='min-h-screen bg-gray-50 py-10 px-4'>
-      
+
         <form onSubmit={onSubmit} className='max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg space-y-4'>
           <div>
             <label htmlFor='name' className='block text-sm font-semibold text-gray-800 mb-1'>
