@@ -3,12 +3,12 @@
 //esses hooks busca os dados da API
 import { useEffect, useState } from "react";
 import ExpenseCard from "./ExpenseCard"
-
 import styled from "styled-components"
+
 
 //tipagem dos props(recebe a função do pai)
 type ExpenseListProps = {
-  onEdit: (id : number) => void;
+  onEdit: (expense: Expense) => void;
 }
 
 
@@ -67,9 +67,18 @@ export default function ExpenseList({onEdit}: ExpenseListProps) {
 
   //useEffect que faz a requisição para a API ao montar o componente
   useEffect(() => {
-    fetch('/api/expenses') //endpoint mockado
-      .then(res => res.json()) //transforma resposta em JSON
-      .then(data => setExpenses(data)) //atualiza estado com os dados recebido
+    fetch('/api/expenses') 
+      .then(res => {
+        if(!res.ok) {
+          throw new Error('Erro na API')
+        }
+        return res.json()
+      }) //transforma resposta em JSON
+      .then(data => setExpenses(data))
+      .catch(error => {
+        console.error('Error:', error)
+        setExpenses([]) //evita quebrar a tela
+      }) //atualiza estado com os dados recebido
   }, []);
 
   //Função responsável por deletar uma despesa via API
@@ -107,7 +116,7 @@ export default function ExpenseList({onEdit}: ExpenseListProps) {
                 price={expense.price}
                 icon={category.icon}
                 onDelete={handleDelete}
-                onEdit={onEdit}
+                onEdit={() => onEdit(expense)}
               />
             ))}
             </CardsContainer>
