@@ -110,10 +110,12 @@ export default function Page() {
     //lê a resposta que a API envia
     const result = await response.json()
     console.log("Resposta do back:", result)
-
+    
+    // Trata a resposta da API após o envio do formulário
     if (response.ok) {
       alert('Operação realizada com sucesso')
-      // Agora funciona sem erro
+      
+      // Limpa os campos do formulário, voltando os estados para vazio
       setName('')
       setDescription('')
       setCategory('')
@@ -121,8 +123,10 @@ export default function Page() {
       setIsEdit(false)
       setSelectedId(null)
     } else {
+       // Caso erro: mostra alerta com mensagem do backend
       alert(`Erro: ${result.message || 'Não foi possível processar'}`)
     }
+    // Finaliza o estado de envio, liberando o botão novamente
     setIsSubmitting(false)
   }
 
