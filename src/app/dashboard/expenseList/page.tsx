@@ -2,13 +2,21 @@
 
 import ExpenseList from "../../components/ExpenseList";
 import DashboardLayout from "@/app/components/DashboardLayout";
+import { useRouter } from 'next/navigation'
 
-const handleEdit = (id: number) => {
-  console.log("editar", id)
-}
+
 
 
 export default function List() {
+
+   const router = useRouter()
+
+  const handleEdit = (expense: any) => {
+    console.log("clicou em editar", expense)
+
+    router.push(`/dashboard/register?id=${expense.id}`)
+  }
+
 
     return(
       <DashboardLayout>
