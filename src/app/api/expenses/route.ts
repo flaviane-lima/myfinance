@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client'
+import { Expense, PrismaClient } from '@prisma/client'
+import { request } from 'http'
 import { NextResponse } from 'next/server'
 
 
@@ -121,4 +122,57 @@ export async function PUT(req: Request) {
       { status: 400 },
     );
   } 
+}
+
+//atualiza os dados mas não completo somente uma parte
+export async function PATCH(req: Request) {
+  try {
+    //extrair os dados enviados pelo o front
+    const { id, name, description, price } = await req.json();
+
+    // validar se o id já foi informado
+    if(!id) {
+      return NextResponse.json(
+        { message: "ID é obrigatório"},
+        { status: 400}
+      );
+    }
+
+    //caso esteja vazio os campos, evita chamada inutil no banco de dados.
+    if(name === undefined && description === undefined && price === undefined) {
+      return NextResponse.json(
+        { message: "Nenhum campo veio" },
+        { status: 400 }
+      );
+    }
+
+    // montando o data para assumir que o Expense é o modelo do prisma
+    const data : Partial<Expense> = {};
+
+    if (name !== undefined ) {
+      data.name = name;
+    }
+    if (description !== undefined) {
+      data.description = description;
+    }
+    if (price !== undefined) {
+      data.price = Number(price);
+    }
+
+    //Comando prisma para atualizar
+    const updatedExpense = await prisma.expense.update({
+      where: { id: Number(id) },
+      data: data,
+    });
+
+    //retorna o objeto atualizado
+    return NextResponse.json(updatedExpense, { status: 200});
+
+  } catch(error) {
+    console.error("Errro a atualizar", error);
+    return NextResponse.json(
+      { message: "Erro a atualizar" },
+      { status: 500 },
+    )
+  }
 }
