@@ -1,6 +1,7 @@
 'use client';
 
 import styled from "styled-components";
+import { useState } from "react";
 
 type ExpenseProps = {
   id: number;
@@ -8,7 +9,7 @@ type ExpenseProps = {
   description: string;
   price: number;
   icon?: string;
-  onDelete? : (id : number ) => void;
+  onDelete?: (id: number) => void;
   onEdit?: () => void;
 };
 
@@ -128,6 +129,7 @@ const Actions = styled.div`
   display: flex;
   gap: 0.5rem;
   margin-left: 1rem;
+  position: relative;
 `;
 
 const RightContent = styled.div`
@@ -138,6 +140,42 @@ const RightContent = styled.div`
 
 
 export default function ExpenseCard({ id, name, description, price, icon, onDelete, onEdit }: ExpenseProps) {
+
+  //estado do menu
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  //estado para edição
+  const [editingName, setEditingName] = useState(name);
+  const [editingPrice, setEditingPrice] = useState(price.toString());
+  const [editingDescription, setEditingDescription] = useState(description);
+
+  function openMenu() {
+    setMenuOpen(prev => !prev);
+  }
+
+  //função do PACTH que é para atualizar o campo que o usuário seleciona
+  async function updateExpense(
+    id: number,
+    data: {
+      name?: string;
+      description?: string;
+      price?: number;
+    }
+  ) {
+    await fetch('/api/expenses', {
+      method: 'PATCH',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({
+        id,
+        ...data
+      }),
+    });
+
+    //para atualizar a tela
+    location.reload()
+  }
+
+
   return (
     <Card>
       <LeftContent>
@@ -148,15 +186,136 @@ export default function ExpenseCard({ id, name, description, price, icon, onDele
         </Texts>
       </LeftContent>
       <RightContent>
-      <Price>R$ {price.toFixed(2).replace('.', ',')}</Price>
-      <Actions>
-      { onDelete && (
-        <button onClick = {() => onDelete(id)}>🗑️</button>
-      )}
-      { onEdit && (
-        <button onClick = {onEdit}>📝</button>
-      )}
-      </Actions>
+        <Price>R$ {price.toFixed(2).replace('.', ',')}</Price>
+        <Actions>
+          {onDelete && (
+            <button onClick={() => onDelete(id)}>🗑️</button>
+          )}
+          {onEdit && (
+            <button onClick={onEdit}>📝</button>
+          )}
+          <button onClick={openMenu}>...</button>
+          {menuOpen && (
+            <>
+            {/* fundo invisível */}
+              <div
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  zIndex: 5,
+                }}
+              />
+            <div style={{
+              position: "absolute",
+              top: "100%",
+              left: 0,
+              background: "white",
+              border: "1px solid #ccc ",
+              padding: "0.75rem",
+              borderRadius: "0.75rem",
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+              gap: "0.5rem",
+              minWidth: "220px",
+              zIndex: 10,
+            }}>
+              
+              <div style={{display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                 <label style={{ fontSize: "0.75rem", color: "#6b7280" }}>Preço</label>
+                <input
+                  type="number"
+                  value={editingPrice}
+                  onChange={(e) => setEditingPrice(e.target.value)}
+                  style={{ 
+                    padding: "0.4rem",
+                    borderRadius: "0.5rem",
+                    border: "1px solid #e5e7eb",
+                    fontSize: "0.85rem"
+
+                  }}
+                />
+                <button style={{
+                  padding: "0.4rem",
+                  borderRadius: "0.5rem",
+                  border: "none",
+                  background: "#10b981",
+                  color: "white",
+                  fontSize: "0.8rem",
+                  cursor: "pointer"
+
+                }} 
+                onClick={() => {
+                  updateExpense(id, { price: Number(editingPrice) });
+                  setMenuOpen(false);
+                }}>Salvar</button>
+              </div>
+
+            
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                <label style={{ fontSize: "0.75rem", color: "#6b7280" }}>Nome</label>
+                <input
+                  type="text"
+                  value={editingName}
+                  onChange={(e) => setEditingName(e.target.value)}
+                  style={{ 
+                    padding: "0.4rem",
+                    borderRadius: "0.5rem",
+                    border: "1px solid #e5e7eb",
+                    fontSize: "0.85rem"
+                  }}
+                />
+                <button style={{
+                  padding: "0.4rem",
+                  borderRadius: "0.5rem",
+                  border: "none",
+                  background: "#10b981",
+                  color: "white",
+                  fontSize: "0.8rem",
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  updateExpense(id, { name: editingName });
+                  setMenuOpen(false);
+                }}>Salvar</button>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                <label style={{ fontSize: "0.75rem", color: "#6b7280" }}>Descrição</label>
+                <input
+                  type="text"
+                  value={editingDescription}
+                  onChange={(e) => setEditingDescription(e.target.value)}
+                  style={{ 
+                    padding: "0.4rem",
+                    borderRadius: "0.5rem",
+                    border: "1px solid #e5e7eb",
+                    fontSize: "0.85rem"
+                  }}
+                />
+                <button style={{
+                  padding: "0.4rem",
+                  borderRadius: "0.5rem",
+                  border: "none",
+                  background: "#10b981",
+                  color: "white",
+                  fontSize: "0.8rem",
+                  cursor: "pointer"
+                }}
+                onClick={() => {
+                  updateExpense(id, { description: editingDescription });
+                  setMenuOpen(false);
+                }}>Salvar descrição</button>
+              </div>
+
+            </div>
+          </>
+          )}
+        </Actions>
       </RightContent>
     </Card>
   );
