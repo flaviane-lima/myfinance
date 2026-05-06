@@ -4,6 +4,8 @@ import { FormEvent, useState, useEffect } from 'react'
 import { Category } from '@prisma/client'
 import DashboardLayout from '@/app/components/DashboardLayout'
 import { useSearchParams } from 'next/navigation'
+import ExpenseForm from '@/app/components/ExpenseForm'
+
 
 export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false) // controla o clique
@@ -134,83 +136,34 @@ export default function Page() {
     // Finaliza o estado de envio, liberando o botão novamente
     setIsSubmitting(false)
   }
+  
+  //valores
+  const formData =  {
+    name,
+    description,
+    category,
+    price
+  }
+
+  //funções
+  const formAction = {
+    setName,
+    setDescription,
+    setCategory,
+    setPrice
+  }
 
   return (
     <DashboardLayout>
-      <div className='min-h-screen bg-gray-50 py-10 px-4'>
+     <ExpenseForm
+     formData={formData}
+     formAction={formAction}
+     categorias={categorias}
+     isSubmitting={isSubmitting}
+     isEdit={isEdit}
+     onSubmit={onSubmit}
 
-        <form onSubmit={onSubmit} className='max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg space-y-4'>
-          <div>
-            <label htmlFor='name' className='block text-sm font-semibold text-gray-800 mb-1'>
-              Nome
-            </label>
-
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm'
-              placeholder='digite aqui'
-            />
-          </div>
-
-          <div>
-            <label htmlFor='description' className='block text-sm font-semibold text-gray-800 mb-1'>
-              Descrição
-            </label>
-
-            <input
-              type="text"
-              name="description"
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm'
-              placeholder='digite aqui'
-            />
-          </div>
-
-          <div>
-            <label htmlFor='category' className='block text-sm font-semibold text-gray-800 mb-1'>
-              Categoria
-            </label>
-
-            <select
-              name="category"
-              id="category-select"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
-            >
-              <option value="">--Selecione--</option>
-              {categorias.map(cat => (
-                <option key={cat.id} value={cat.name}>{cat.name}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor='price' className='block text-sm font-semibold text-gray-800 mb-1'>Preço</label>
-            <input
-              type="number"
-              name="price"
-              step="0.01"
-              id="price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm'
-              placeholder='digite aqui'
-            />
-          </div>
-          <button type="submit" className='w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition'>{isSubmitting
-            ? 'Enviando...'
-            : isEdit
-              ? 'Atualizar'
-              : 'Enviar'}</button>
-        </form>
-
-      </div>
+     />
     </DashboardLayout>
 
   )
