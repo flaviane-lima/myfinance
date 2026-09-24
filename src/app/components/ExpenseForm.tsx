@@ -4,7 +4,9 @@ import { Category } from "@prisma/client"
 export default function ExpenseForm(props: any) {
   return (
     <div className='min-h-screen bg-gray-50 py-10 px-4'>
-      <form onSubmit={props.onSubmit}>
+      <form onSubmit={props.onSubmit}
+      className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg space-y-4"
+      >
         <div>
             <label htmlFor='name' className='block text-sm font-semibold text-gray-800 mb-1'>
               Nome
