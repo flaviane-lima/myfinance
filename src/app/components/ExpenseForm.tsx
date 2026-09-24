@@ -15,7 +15,7 @@ export default function ExpenseForm(props: any) {
               name="name"
               id="name"
               value={props.formData.name}
-              onChange={(e) => props.formActionsetName(e.target.value)}
+              onChange={(e) => props.formAction.setName(e.target.value)}
               className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm'
               placeholder='digite aqui'
             />
@@ -30,7 +30,7 @@ export default function ExpenseForm(props: any) {
               type="text"
               name="description"
               id="description"
-              value={props.formDatadescription}
+              value={props.formData.description}
               onChange={(e) => props.formAction.setDescription(e.target.value)}
               className='w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm'
               placeholder='digite aqui'
