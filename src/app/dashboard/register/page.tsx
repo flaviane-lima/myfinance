@@ -70,8 +70,6 @@ export default function Page() {
     // Ativa o estado de envio (botão fica "Enviando...")
     setIsSubmitting(true)
 
-    // Referência ao formulário antes de usar await
-    const form = event.currentTarget
 
     //captura os dados do formulário
     const formData = new FormData(event.currentTarget)
