@@ -25,11 +25,11 @@ export default function Page() {
   //função de limpeza
   const cleanForm = () => {
     setName('')
-      setDescription('')
-      setCategory('')
-      setPrice('')
-      setIsEdit(false)
-      setSelectedId(null)
+    setDescription('')
+    setCategory('')
+    setPrice('')
+    setIsEdit(false)
+    setSelectedId(null)
   }
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function Page() {
     } else {
       //função de limpar(quando não tem id)
       cleanForm()
-      
+
     }
   }, [id])
 
@@ -89,53 +89,59 @@ export default function Page() {
     }
 
     let response
-    // Se estiver em modo edição e houver id selecionado → PUT
-    if (isEdit && selectedId !== null) {
-      response = await fetch('/api/expenses', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id: selectedId,
-          name: data.name,
-          description: data.description,
-          category: data.category,   // se quiser atualizar categoria também
-          price: Number(data.price),
-        }),
-      })
-    } else {
-      // Caso contrário → POST (novo registro)
-      response = await fetch('/api/expenses', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data),
-      })
-    }
+    try {
+      // Se estiver em modo edição e houver id selecionado → PUT
+      if (isEdit && selectedId !== null) {
+        response = await fetch('/api/expenses', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: selectedId,
+            name: data.name,
+            description: data.description,
+            category: data.category,   // se quiser atualizar categoria também
+            price: Number(data.price),
+          }),
+        })
+      } else {
+        // Caso contrário → POST (novo registro)
+        response = await fetch('/api/expenses', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+        })
+      }
 
-    // Mostra status da API no console
-    console.log("STATUS DA API:", response.status)
 
-    //lê a resposta que a API envia
-    const result = await response.json()
-    console.log("Resposta do back:", result)
+      // Mostra status da API no console
+      console.log("STATUS DA API:", response.status)
 
-    // Trata a resposta da API após o envio do formulário
-    if (response.ok) {
-      alert('Operação realizada com sucesso')
+      //lê a resposta que a API envia
+      const result = await response.json()
+      console.log("Resposta do back:", result)
 
-      // Limpa os campos do formulário, voltando os estados para vazio
-      cleanForm()
-    } else {
-      // Caso erro: mostra alerta com mensagem do backend
-      alert(`Erro: ${result.message || 'Não foi possível processar'}`)
+      // Trata a resposta da API após o envio do formulário
+      if (response.ok) {
+        alert('Operação realizada com sucesso')
+
+        // Limpa os campos do formulário, voltando os estados para vazio
+        cleanForm()
+      } else {
+        // Caso erro: mostra alerta com mensagem do backend
+        alert(`Erro: ${result.message || 'Não foi possível processar'}`)
+      }
+    } catch (erro) {
+      // 2. Se qualquer erro acontecer no bloco try, o código pula direto para cá
+      console.error("Ocorreu um erro na requisição:", erro);
     }
     // Finaliza o estado de envio, liberando o botão novamente
     setIsSubmitting(false)
   }
-  
+
   //valores
-  const formData =  {
+  const formData = {
     name,
     description,
     category,
@@ -152,15 +158,15 @@ export default function Page() {
 
   return (
     <DashboardLayout>
-     <ExpenseForm
-     formData={formData}
-     formAction={formAction}
-     categorias={categorias}
-     isSubmitting={isSubmitting}
-     isEdit={isEdit}
-     onSubmit={onSubmit}
+      <ExpenseForm
+        formData={formData}
+        formAction={formAction}
+        categorias={categorias}
+        isSubmitting={isSubmitting}
+        isEdit={isEdit}
+        onSubmit={onSubmit}
 
-     />
+      />
     </DashboardLayout>
 
   )
