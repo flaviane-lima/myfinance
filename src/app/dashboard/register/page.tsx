@@ -6,7 +6,6 @@ import DashboardLayout from '@/app/components/DashboardLayout'
 import { useSearchParams } from 'next/navigation'
 import ExpenseForm from '@/app/components/ExpenseForm'
 
-
 export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false) // controla o clique
   const [categorias, setCategoria] = useState<Category[]>([]);
@@ -23,6 +22,15 @@ export default function Page() {
   const searchParams = useSearchParams()
   const id = searchParams.get('id')
 
+  //função de limpeza
+  const cleanForm = () => {
+    setName('')
+      setDescription('')
+      setCategory('')
+      setPrice('')
+      setIsEdit(false)
+      setSelectedId(null)
+  }
 
   useEffect(() => {
     fetch('/api/category')
@@ -46,18 +54,14 @@ export default function Page() {
             setDescription(expense.description ?? '')
             setCategory(expense.category.name ?? '')
             setPrice(expense.price != null ? String(expense.price) : '')
-
             setSelectedId(expense.id)
             setIsEdit(true)
           }
         })
     } else {
-      //limpa o formulário quando não tem id
-      setName('')
-      setDescription('')
-      setCategory('')
-      setIsEdit(false)
-      setSelectedId(null)
+      //função de limpar(quando não tem id)
+      cleanForm()
+      
     }
   }, [id])
 
@@ -121,12 +125,7 @@ export default function Page() {
       alert('Operação realizada com sucesso')
 
       // Limpa os campos do formulário, voltando os estados para vazio
-      setName('')
-      setDescription('')
-      setCategory('')
-      setPrice('')
-      setIsEdit(false)
-      setSelectedId(null)
+      cleanForm()
     } else {
       // Caso erro: mostra alerta com mensagem do backend
       alert(`Erro: ${result.message || 'Não foi possível processar'}`)
@@ -150,7 +149,6 @@ export default function Page() {
     setCategory,
     setPrice
   }
-
 
   return (
     <DashboardLayout>
